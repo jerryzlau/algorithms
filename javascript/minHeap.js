@@ -1,102 +1,92 @@
-// Implement a min heap:
-
-// -> insert, extract_min
-
-// property:
-// - elements are in ascending order
-// - complete binary tree (node is smaller than it’s children)
-// - root is the most minimum
-// - insert takes O(logn) time
-//     - insert to the bottom right
-//     - bubble up until it meets requirements
-// - extract_min takes O(logn) time
-//     - replace min with bottom right
-//     - bubble down until it meets requirements
-
-function MinHeap() {
-  this.data = [null];
+function MinHeap(){
+  this.map = [null];
 }
 
-MinHeap.prototype.insert = function (val) {
-  this.data.push(val);
-  this.bubbleUp(this.data.length - 1);
+MinHeap.prototype.insert = function(val){
+  this.map.push(val);
+  this.heapifyUp();
 };
 
-MinHeap.prototype.bubbleUp = function (index) {
-  while (index > 0) {
-    // get the parent
-    var parent = Math.floor(index/ 2);
+MinHeap.prototype.remove = function(){
+  const min = this.map[1];
 
-    // if parent is greater than child
-    if (this.data[parent] > this.data[index]) {
-      // swap
-      var temp = this.data[parent];
-      this.data[parent] = this.data[index];
-      this.data[index] = temp;
-    }
-
-    index = parent;
+  // if there is not node in the tree we return null
+  if(this.map.length === 1){
+    return null;
+  }else if(this.map.length === 2){ // if there is only 2 elements we pop and return that element
+    return this.map.pop();
+  }else{ // else we pull the last element up and heapify down
+    this.map[1] = this.map.pop();
+    this.heapifyDown();
   }
-};
-
-MinHeap.prototype.extractMin = function () {
-  var min = this.data[1];
-
-  // set first element to last element
-  this.data[1] = this.data.pop();
-
-  // call bubble down
-  this.bubbleDown(1);
-
+  
   return min;
 };
 
-MinHeap.prototype.bubbleDown = function (index) {
-  while (true) {
-    var child = index * 2;
-    var sibling = child + 1;
-    var toSwap = null;
+MinHeap.prototype.heapifyUp = function(){
+  let currentIdx = this.map.length-1;
 
-    // if current is greater than child
-    if (this.data[index] > this.data[child]) {
-      toSwap = child;
+  while(currentIdx > 0){
+    const parentIdx = Math.floor(currentIdx/2);
+
+    // if parent is larger than current then swap
+    if(this.map[parentIdx] > this.map[currentIdx]){
+      const tempParent = this.map[parentIdx];
+      this.map[parentIdx] = this.map[currentIdx];
+      this.map[currentIdx] = tempParent;
     }
 
-    // if sibling is smaller than child, but also smaller than current
-    if (this.data[index] > this.data[sibling] && (this.data[child] == null || (this.data[child] !== null && this.data[sibling] < this.data[child]))) {
-      toSwap = sibling;
-    }
-
-    // if we don't need to swap, then break.
-    if (toSwap == null) {
-      break;
-    }
-
-    var temp = this.data[toSwap];
-    this.data[toSwap] = this.data[index];
-    this.data[index] = temp;
-
-    index = toSwap;
+    currentIdx = parentIdx;
   }
 };
 
-var heap = new MinHeap();
+MinHeap.prototype.heapifyDown = function(){
+  // we heapify from the root
+  let currentIdx = 1;
 
-heap.insert(5);
-heap.insert(4);
-heap.insert(1);
-heap.insert(8);
-heap.insert(6);
-heap.insert(0);
-heap.insert(1);
-heap.insert(14);
-heap.insert(2);
-heap.insert(7);
+  while(true){
+    const childIdx = currentIdx * 2;
+    const sibIdx = currentIdx * 2 + 1;
+    let swapTargetIdx = null;
 
-console.log(heap.data);
+    // if current is larger than child then we might swap them 
+    if(this.map[currentIdx] > this.map[childIdx]){
+      swapTargetIdx = childIdx;
+    }
 
-console.log(heap.extractMin());
-console.log(heap.data);
-// console.log(heap.extractMin());
-// console.log(heap.extractMin());
-// console.log(heap.extractMin());
+    // if sib is less than current and child
+    if (this.map[sibIdx] < this.map[currentIdx] && this.map[sibIdx] < this.map[currentIdx] && this.map[sibIdx] < this.map[childIdx]) {
+      swapTargetIdx = sibIdx;
+    }
+
+    // check if we need to swap, if not, we stop here
+    if(swapTargetIdx === null) break;
+
+    // now we want to swap
+    const tempParent = this.map[currentIdx];
+    this.map[currentIdx] = this.map[swapTargetIdx];
+    this.map[swapTargetIdx] = tempParent;
+
+    currentIdx = swapTargetIdx;
+  }
+};
+
+let minHeap = new MinHeap();
+
+minHeap.insert(7);
+minHeap.insert(8);
+minHeap.insert(6);
+minHeap.insert(1);
+minHeap.insert(3);
+
+console.log(minHeap.map);
+
+console.log(minHeap.remove());
+console.log(minHeap.remove());
+console.log(minHeap.remove());
+console.log(minHeap.remove());
+console.log(minHeap.remove());
+console.log(minHeap.remove());
+
+
+console.log(minHeap.map);
