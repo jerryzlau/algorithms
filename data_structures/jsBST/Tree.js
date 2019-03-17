@@ -12,7 +12,10 @@ BST.prototype.insert = function(val){
   const node = new Node(val);
 
   // if the tree is empty, add node to root
-  if(this.root === null) return this.root = node;
+  if(this.root === null) {
+    this.root = node;
+    return;
+  }
 
   // otherwise, we need to to the right spot
   this.insertNode(this.root, node);
@@ -82,13 +85,35 @@ BST.prototype.findMinNode = function(node){
   return this.findMinNode(node.left);
 };
 
-let tree = new BST();
-tree.insert(3);
-tree.insert(1);
-tree.insert(4);
+BST.prototype.toArray = function(){
+  let array = [];
+  function traverse(root){
+    if(!root) return null;
+    array.push(root.val);
 
-tree.remove(3);
-tree.remove(1);
-tree.remove(4);
+    if(root.left) traverse(root.left);
+    if(root.right) traverse(root.right);
+  }
+
+  traverse(this.root);
+
+  return array;
+};
+
+// BST.prototype.bfs = function(root){
+
+// }
+
+let tree = new BST();
+tree.insert(10);
+tree.insert(9);
+tree.insert(7);
+tree.insert(8);
+tree.insert(3);
+
+// tree.remove(3);
+// tree.remove(1);
+// tree.remove(4);
 
 console.log(tree);
+console.log(tree.toArray());

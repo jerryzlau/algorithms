@@ -11,6 +11,7 @@ function debounce(fn, wait) {
     }
 
     timeout = setTimeout(later, wait);
+    return timeout;
   };
 }
 
@@ -26,6 +27,23 @@ function emulateDebouncedEvents(){
   setTimeout(() => {
     clearInterval(interval);
   }, 2000);
+}
+
+function throttle(fn, wait){
+  let throttling = true;
+
+  return function(){
+    function later(){
+      fn.apply(this, arguments);
+    }
+
+    if(!throttling){
+      setTimeout(() => {
+        throttling = false;
+        return later();
+      }, wait);
+    }
+  };
 }
 
 emulateDebouncedEvents();

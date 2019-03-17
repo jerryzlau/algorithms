@@ -56,7 +56,7 @@ MinHeap.prototype.heapifyDown = function(){
     }
 
     // if sib is less than current and child
-    if (this.map[sibIdx] < this.map[currentIdx] && this.map[sibIdx] < this.map[currentIdx] && this.map[sibIdx] < this.map[childIdx]) {
+    if (this.map[sibIdx] < this.map[currentIdx] && this.map[sibIdx] < this.map[childIdx]) {
       swapTargetIdx = sibIdx;
     }
 
@@ -74,20 +74,32 @@ MinHeap.prototype.heapifyDown = function(){
 
 let minHeap = new MinHeap();
 
-minHeap.insert(7);
-minHeap.insert(8);
+// minHeap.insert(7);
+// minHeap.insert(8);
+// minHeap.insert(6);
+// minHeap.insert(1);
+// minHeap.insert(3);
+
+// console.log(minHeap.map);
+
+// console.log(minHeap.remove());
+// // console.log(minHeap.remove());
+// // console.log(minHeap.remove());
+// // console.log(minHeap.remove());
+// // console.log(minHeap.remove());
+// // console.log(minHeap.remove());
+
+
+// console.log(minHeap.map);
+
+minHeap.insert(4);
+minHeap.insert(5);
 minHeap.insert(6);
+minHeap.insert(2);
 minHeap.insert(1);
-minHeap.insert(3);
 
 console.log(minHeap.map);
 
-console.log(minHeap.remove());
-console.log(minHeap.remove());
-console.log(minHeap.remove());
-console.log(minHeap.remove());
-console.log(minHeap.remove());
-console.log(minHeap.remove());
-
+minHeap.remove(1);
 
 console.log(minHeap.map);
