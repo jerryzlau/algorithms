@@ -79,9 +79,8 @@ BST.prototype.contain = function(val){
 // };
 
 const root = new BST();
-root.insert(2);
-root.insert(3);
-root.insert(6);
+[-10, -3, 0, 5, 9].forEach(n => {
+  root.insert(n);
+});
 
 console.log(root);
-console.log(root.contain(2));
